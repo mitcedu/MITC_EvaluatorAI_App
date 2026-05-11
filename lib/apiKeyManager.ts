@@ -83,8 +83,8 @@ function markKeyFailed(ks: KeyState, errorCode: number): void {
     // Rate limit → cooldown dài hơn
     cooldownMs = Math.min(60000 * ks.failCount, 300000); // 1-5 phút
   } else if (errorCode === 503) {
-    // Server overload → cooldown ngắn để retry nhanh khi Google phục hồi
-    cooldownMs = Math.min(10000 * ks.failCount, 30000); // 10s-30s
+    // Server overload → cooldown ngắn hơn
+    cooldownMs = Math.min(30000 * ks.failCount, 120000); // 30s-2 phút
   } else {
     cooldownMs = 60000; // Mặc định 1 phút
   }
@@ -157,12 +157,8 @@ export async function callGeminiWithRotation(
 ): Promise<GeminiCallResult> {
   initKeys();
 
-  // Cố định gemini-3.1-pro-preview — chất lượng đánh giá tốt nhất cho Hội đồng
-  const primaryModel = "gemini-3.1-pro-preview";
-  const fallbackModel = "gemini-2.5-pro";
-
-  // Timeout cho mỗi lần gọi API (50s để chừa 10s cho Vercel overhead)
-  const PER_CALL_TIMEOUT_MS = 50000;
+  const primaryModel = process.env.AI_MODEL || "gemini-3.1-pro-preview";
+  const fallbackModel = process.env.AI_MODEL_FALLBACK || "gemini-2.5-flash";
 
   // Thử tất cả key với model chính, rồi thử lại với model dự phòng
   const modelsToTry = [primaryModel, fallbackModel];
@@ -170,8 +166,7 @@ export async function callGeminiWithRotation(
   let totalAttempts = 0;
 
   for (const model of modelsToTry) {
-    // Giới hạn retry tối đa 3 lần/model để không vượt Vercel 60s timeout
-    const maxRetries = Math.min(keyStates.length, 3);
+    const maxRetries = keyStates.length;
 
     for (let retry = 0; retry < maxRetries; retry++) {
       const ks = getNextAvailableKey();
@@ -189,16 +184,11 @@ export async function callGeminiWithRotation(
       console.log(`[KeyManager] Thử Key #${ks.index} với model ${model} (lần thử ${totalAttempts})`);
 
       try {
-        // AbortController: timeout 50s/request để chừa buffer cho Vercel 60s limit
-        const controller = new AbortController();
-        const timeoutId = setTimeout(() => controller.abort(), PER_CALL_TIMEOUT_MS);
-
         const response = await fetch(
           `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${ks.key}`,
           {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            signal: controller.signal,
             body: JSON.stringify({
               contents: [{ role: "user", parts: [{ text: userPrompt }] }],
               systemInstruction: { parts: [{ text: system }] },
@@ -210,8 +200,6 @@ export async function callGeminiWithRotation(
             }),
           }
         );
-
-        clearTimeout(timeoutId);
 
         if (response.ok) {
           const data = await response.json();
@@ -262,14 +250,6 @@ export async function callGeminiWithRotation(
 
       } catch (err) {
         if ((err as Error).message === lastError) throw err; // Re-throw 400 errors
-
-        // AbortError = timeout 50s
-        if ((err as Error).name === "AbortError") {
-          markKeyFailed(ks, 503);
-          lastError = `Hệ thống AI phản hồi quá lâu (vượt ${PER_CALL_TIMEOUT_MS / 1000}s). Đang thử key/model khác...`;
-          console.log(`[KeyManager] ⏱ Key #${ks.index} timeout ${PER_CALL_TIMEOUT_MS / 1000}s với model ${model}`);
-          continue;
-        }
         
         // Network error
         markKeyFailed(ks, 500);
@@ -293,11 +273,9 @@ export async function callGeminiWithRotation(
   // Tất cả đều thất bại
   const stats = getKeyStats();
   throw new Error(
-    `⚠️ Hệ thống AI Google Gemini đang tạm thời quá tải (lỗi 503). ` +
-    `Đây là sự cố phía Google, không phải lỗi hệ thống MITC.\n\n` +
-    `Vui lòng thử lại sau 2-3 phút. ` +
-    `Nếu vẫn lỗi, hãy liên hệ quản trị viên.\n\n` +
-    `(Đã thử ${totalAttempts} lần với ${stats.total} kênh AI)`
+    `Tất cả ${stats.total} kênh AI đều đang bận hoặc gặp sự cố. ` +
+    `Vui lòng thử lại sau 1-2 phút.\n\n` +
+    `Chi tiết kỹ thuật: ${lastError}`
   );
 }
 
