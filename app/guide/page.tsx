@@ -3,7 +3,7 @@ import BrandFooter from "@/components/BrandFooter";
 import { BRANDING } from "@/lib/branding";
 import { CRITERIA, CRITERIA_GROUPS } from "@/lib/criteria";
 import { REVIEWER_ROLES } from "@/lib/roles";
-import { BookOpen, Target, Users, AlertTriangle, FileCheck, Lightbulb } from "lucide-react";
+import { BookOpen, Target, Users, AlertTriangle, FileCheck, Lightbulb, History, GitCompare } from "lucide-react";
 
 export default function GuidePage() {
   return (
@@ -47,6 +47,71 @@ export default function GuidePage() {
                 </div>
               </div>
             ))}
+          </div>
+        </div>
+
+        {/* History Guide */}
+        <div className="bg-white rounded-xl card-shadow-lg p-6">
+          <h2 className="text-lg font-bold text-slate-800 mb-4 flex items-center gap-2">
+            <History className="text-blue-600" size={20} />
+            Sử dụng tính năng Lịch sử
+          </h2>
+          <p className="text-sm text-slate-600 mb-4">
+            Tab <strong>&quot;Lịch sử&quot;</strong> cho phép bạn xem lại tất cả các sản phẩm đã đánh giá trước đó.
+            Mỗi lần nhấn nút <strong>&quot;Lưu&quot;</strong> trong trang kết quả, bản đánh giá sẽ được ghi vào lịch sử.
+          </p>
+          <div className="space-y-3">
+            {[
+              { step: 1, title: "Truy cập Lịch sử", desc: "Nhấn tab \"Lịch sử\" trên thanh menu chính. Danh sách tất cả sản phẩm đã đánh giá sẽ hiển thị theo thứ tự thời gian (mới nhất lên trên)." },
+              { step: 2, title: "Tìm kiếm nhanh", desc: "Sử dụng ô tìm kiếm để lọc nhanh theo tên sản phẩm hoặc đơn vị dự thi." },
+              { step: 3, title: "Xem lại kết quả", desc: "Nhấn biểu tượng 👁 (Xem) để mở lại toàn bộ kết quả đánh giá chi tiết của sản phẩm đó, bao gồm điểm số, biểu đồ, nhận xét và câu hỏi phản biện." },
+              { step: 4, title: "Tải JSON", desc: "Nhấn biểu tượng ⬇ (Tải) để xuất dữ liệu đánh giá dưới dạng file JSON — có thể dùng để lưu trữ hoặc xử lý thêm." },
+              { step: 5, title: "Xóa bản ghi", desc: "Nhấn biểu tượng 🗑 (Xóa) để xóa một bản ghi không còn cần thiết. Lưu ý: hành động này không thể hoàn tác." },
+            ].map((s) => (
+              <div key={s.step} className="flex gap-3 items-start">
+                <div className="w-7 h-7 rounded-full bg-blue-100 text-blue-700 flex items-center justify-center shrink-0 font-bold text-xs">{s.step}</div>
+                <div>
+                  <h4 className="font-semibold text-sm text-slate-700">{s.title}</h4>
+                  <p className="text-sm text-slate-600">{s.desc}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+          <div className="mt-4 bg-blue-50 border border-blue-200 rounded-lg p-3">
+            <p className="text-xs text-blue-700">💡 <strong>Lưu ý:</strong> Dữ liệu lịch sử được lưu trên trình duyệt (localStorage) của thiết bị bạn đang sử dụng. Nếu xóa dữ liệu trình duyệt hoặc đổi thiết bị, lịch sử sẽ bị mất. Hãy xuất file Word hoặc JSON để lưu trữ lâu dài.</p>
+          </div>
+        </div>
+
+        {/* Compare Guide */}
+        <div className="bg-white rounded-xl card-shadow-lg p-6">
+          <h2 className="text-lg font-bold text-slate-800 mb-4 flex items-center gap-2">
+            <GitCompare className="text-teal-600" size={20} />
+            Sử dụng tính năng So sánh
+          </h2>
+          <p className="text-sm text-slate-600 mb-4">
+            Tab <strong>&quot;So sánh&quot;</strong> giúp bạn đặt 2 sản phẩm cạnh nhau để đối chiếu điểm số, phân tích sự khác biệt
+            theo từng nhóm tiêu chí và tiêu chí chi tiết — hỗ trợ Hội đồng ra quyết định chính xác hơn.
+          </p>
+          <div className="space-y-3">
+            {[
+              { step: 1, title: "Đảm bảo có ít nhất 2 bản đánh giá", desc: "Bạn cần đã đánh giá và lưu ít nhất 2 sản phẩm vào Lịch sử trước khi sử dụng tính năng So sánh." },
+              { step: 2, title: "Truy cập So sánh", desc: "Nhấn tab \"So sánh\" trên thanh menu chính." },
+              { step: 3, title: "Chọn Sản phẩm A và Sản phẩm B", desc: "Sử dụng 2 dropdown để chọn 2 sản phẩm muốn so sánh từ danh sách lịch sử đánh giá." },
+              { step: 4, title: "Xem biểu đồ Radar so sánh", desc: "Biểu đồ Radar hiển thị phần trăm đạt được của 10 tiêu chí — giúp nhận diện nhanh sản phẩm nào mạnh hơn ở tiêu chí nào." },
+              { step: 5, title: "Xem biểu đồ cột nhóm tiêu chí", desc: "Biểu đồ cột so sánh điểm số theo 4 nhóm tiêu chí lớn (Thực tiễn, Công nghệ, Hồ sơ, Tuân thủ)." },
+              { step: 6, title: "Bảng chi tiết từng tiêu chí", desc: "Bảng phía dưới hiển thị điểm số cụ thể từng tiêu chí của cả 2 sản phẩm, kèm chênh lệch — hỗ trợ so sánh định lượng." },
+            ].map((s) => (
+              <div key={s.step} className="flex gap-3 items-start">
+                <div className="w-7 h-7 rounded-full bg-teal-100 text-teal-700 flex items-center justify-center shrink-0 font-bold text-xs">{s.step}</div>
+                <div>
+                  <h4 className="font-semibold text-sm text-slate-700">{s.title}</h4>
+                  <p className="text-sm text-slate-600">{s.desc}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+          <div className="mt-4 bg-teal-50 border border-teal-200 rounded-lg p-3">
+            <p className="text-xs text-teal-700">💡 <strong>Mẹo:</strong> Sử dụng So sánh khi cần xếp hạng hoặc phân loại giải thưởng giữa các sản phẩm có điểm số gần nhau. Biểu đồ Radar đặc biệt hữu ích để nhận diện thế mạnh riêng của từng sản phẩm.</p>
           </div>
         </div>
 
