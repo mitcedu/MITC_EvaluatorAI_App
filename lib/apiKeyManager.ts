@@ -157,8 +157,12 @@ export async function callGeminiWithRotation(
 ): Promise<GeminiCallResult> {
   initKeys();
 
-  const primaryModel = process.env.AI_MODEL || "gemini-3.1-pro-preview";
-  const fallbackModel = process.env.AI_MODEL_FALLBACK || "gemini-2.5-flash";
+  // gemini-2.5-flash nhanh hơn (~20-40s) → primary để tránh Vercel 60s timeout
+  const primaryModel = process.env.AI_MODEL || "gemini-2.5-flash";
+  const fallbackModel = process.env.AI_MODEL_FALLBACK || "gemini-2.5-pro-preview-05-06";
+
+  // Timeout cho mỗi lần gọi API (50s để chừa 10s cho Vercel overhead)
+  const PER_CALL_TIMEOUT_MS = 50000;
 
   // Thử tất cả key với model chính, rồi thử lại với model dự phòng
   const modelsToTry = [primaryModel, fallbackModel];
@@ -166,7 +170,8 @@ export async function callGeminiWithRotation(
   let totalAttempts = 0;
 
   for (const model of modelsToTry) {
-    const maxRetries = keyStates.length;
+    // Giới hạn retry tối đa 3 lần/model để không vượt Vercel 60s timeout
+    const maxRetries = Math.min(keyStates.length, 3);
 
     for (let retry = 0; retry < maxRetries; retry++) {
       const ks = getNextAvailableKey();
@@ -184,11 +189,16 @@ export async function callGeminiWithRotation(
       console.log(`[KeyManager] Thử Key #${ks.index} với model ${model} (lần thử ${totalAttempts})`);
 
       try {
+        // AbortController: timeout 50s/request để chừa buffer cho Vercel 60s limit
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), PER_CALL_TIMEOUT_MS);
+
         const response = await fetch(
           `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${ks.key}`,
           {
             method: "POST",
             headers: { "Content-Type": "application/json" },
+            signal: controller.signal,
             body: JSON.stringify({
               contents: [{ role: "user", parts: [{ text: userPrompt }] }],
               systemInstruction: { parts: [{ text: system }] },
@@ -200,6 +210,8 @@ export async function callGeminiWithRotation(
             }),
           }
         );
+
+        clearTimeout(timeoutId);
 
         if (response.ok) {
           const data = await response.json();
@@ -250,6 +262,14 @@ export async function callGeminiWithRotation(
 
       } catch (err) {
         if ((err as Error).message === lastError) throw err; // Re-throw 400 errors
+
+        // AbortError = timeout 50s
+        if ((err as Error).name === "AbortError") {
+          markKeyFailed(ks, 503);
+          lastError = `Hệ thống AI phản hồi quá lâu (vượt ${PER_CALL_TIMEOUT_MS / 1000}s). Đang thử key/model khác...`;
+          console.log(`[KeyManager] ⏱ Key #${ks.index} timeout ${PER_CALL_TIMEOUT_MS / 1000}s với model ${model}`);
+          continue;
+        }
         
         // Network error
         markKeyFailed(ks, 500);
