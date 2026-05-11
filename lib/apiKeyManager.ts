@@ -157,9 +157,9 @@ export async function callGeminiWithRotation(
 ): Promise<GeminiCallResult> {
   initKeys();
 
-  // gemini-2.5-flash nhanh hơn (~20-40s) → primary để tránh Vercel 60s timeout
-  const primaryModel = process.env.AI_MODEL || "gemini-2.5-flash";
-  const fallbackModel = process.env.AI_MODEL_FALLBACK || "gemini-2.5-pro-preview-05-06";
+  // Cố định gemini-3.1-pro-preview — chất lượng đánh giá tốt nhất cho Hội đồng
+  const primaryModel = "gemini-3.1-pro-preview";
+  const fallbackModel = "gemini-2.5-pro-preview-05-06";
 
   // Timeout cho mỗi lần gọi API (50s để chừa 10s cho Vercel overhead)
   const PER_CALL_TIMEOUT_MS = 50000;
