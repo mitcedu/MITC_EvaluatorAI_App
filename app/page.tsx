@@ -59,9 +59,20 @@ export default function HomePage() {
       }
 
       const res = await fetch("/api/analyze", { method: "POST", body: formData });
-      const data = await res.json();
 
       clearInterval(timer);
+
+      // Xử lý response an toàn — tránh lỗi JSON parse khi server trả về text
+      let data;
+      const responseText = await res.text();
+      try {
+        data = JSON.parse(responseText);
+      } catch {
+        // Server trả về text thuần (không phải JSON)
+        setError(`Lỗi hệ thống: Máy chủ phản hồi không hợp lệ. Vui lòng thử lại sau vài phút.\n\nChi tiết: ${responseText.substring(0, 200)}`);
+        setAnalyzing(false);
+        return;
+      }
 
       if (!res.ok) {
         setError(data.error || "Đã xảy ra lỗi. Vui lòng thử lại.");
@@ -110,6 +121,10 @@ export default function HomePage() {
             <div className="inline-flex items-center gap-2 bg-amber-50 border border-amber-200 text-amber-800 px-4 py-2 rounded-lg text-sm">
               <AlertTriangle size={16} />
               <span>{BRANDING.disclaimer}</span>
+            </div>
+            <div className="mt-3 inline-flex items-center gap-2 bg-blue-50 border border-blue-200 text-blue-700 px-4 py-2 rounded-lg text-sm">
+              <Sparkles size={16} />
+              <span>⏱ Mỗi lượt đánh giá có thể mất từ <strong>3 đến trên 5 phút</strong> để AI phân tích toàn diện. Vui lòng kiên nhẫn chờ kết quả.</span>
             </div>
           </div>
         </section>
