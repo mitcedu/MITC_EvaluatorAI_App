@@ -83,8 +83,8 @@ function markKeyFailed(ks: KeyState, errorCode: number): void {
     // Rate limit → cooldown dài hơn
     cooldownMs = Math.min(60000 * ks.failCount, 300000); // 1-5 phút
   } else if (errorCode === 503) {
-    // Server overload → cooldown ngắn hơn
-    cooldownMs = Math.min(30000 * ks.failCount, 120000); // 30s-2 phút
+    // Server overload → cooldown ngắn để retry nhanh khi Google phục hồi
+    cooldownMs = Math.min(10000 * ks.failCount, 30000); // 10s-30s
   } else {
     cooldownMs = 60000; // Mặc định 1 phút
   }
@@ -159,7 +159,7 @@ export async function callGeminiWithRotation(
 
   // Cố định gemini-3.1-pro-preview — chất lượng đánh giá tốt nhất cho Hội đồng
   const primaryModel = "gemini-3.1-pro-preview";
-  const fallbackModel = "gemini-2.5-pro-preview-05-06";
+  const fallbackModel = "gemini-2.5-pro";
 
   // Timeout cho mỗi lần gọi API (50s để chừa 10s cho Vercel overhead)
   const PER_CALL_TIMEOUT_MS = 50000;
@@ -293,9 +293,11 @@ export async function callGeminiWithRotation(
   // Tất cả đều thất bại
   const stats = getKeyStats();
   throw new Error(
-    `Tất cả ${stats.total} kênh AI đều đang bận hoặc gặp sự cố. ` +
-    `Vui lòng thử lại sau 1-2 phút.\n\n` +
-    `Chi tiết kỹ thuật: ${lastError}`
+    `⚠️ Hệ thống AI Google Gemini đang tạm thời quá tải (lỗi 503). ` +
+    `Đây là sự cố phía Google, không phải lỗi hệ thống MITC.\n\n` +
+    `Vui lòng thử lại sau 2-3 phút. ` +
+    `Nếu vẫn lỗi, hãy liên hệ quản trị viên.\n\n` +
+    `(Đã thử ${totalAttempts} lần với ${stats.total} kênh AI)`
   );
 }
 
