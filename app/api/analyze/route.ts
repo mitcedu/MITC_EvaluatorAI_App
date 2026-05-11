@@ -89,9 +89,9 @@ export async function POST(request: NextRequest) {
     let reportText = "";
 
     if (file && file.size > 0) {
-      if (file.size > 20 * 1024 * 1024) {
+      if (file.size > 4 * 1024 * 1024) {
         return NextResponse.json(
-          { error: "File quá lớn (vượt 20MB). Vui lòng giảm dung lượng file hoặc chia nhỏ nội dung." },
+          { error: "File quá lớn (vượt 4MB). Vui lòng nén file hoặc sao chép nội dung và dán trực tiếp vào ô văn bản." },
           { status: 400 }
         );
       }
