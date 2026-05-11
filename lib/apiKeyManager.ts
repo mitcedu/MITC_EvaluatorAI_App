@@ -1,6 +1,7 @@
 /**
- * Smart API Key Manager — Xoay vòng 6 Key + Cooldown + Auto-Retry
- * Đảm bảo hệ thống luôn sẵn sàng khi 1 key bị quá tải hoặc hết quota.
+ * Smart API Key Manager — Xoay vòng 12 Key + Cooldown + Auto-Retry
+ * Đảm bảo hệ thống luôn sẵn sàng khi Hội đồng làm việc đồng thời.
+ * Hỗ trợ tối đa 20 key slots để dự phòng mở rộng.
  */
 
 interface KeyState {
@@ -20,7 +21,7 @@ function initKeys(): void {
   if (initialized && keyStates.length > 0) return;
 
   keyStates = [];
-  for (let i = 1; i <= 10; i++) {
+  for (let i = 1; i <= 20; i++) {
     const key = process.env[`AI_API_KEY_${i}`];
     if (key && key.trim()) {
       keyStates.push({
