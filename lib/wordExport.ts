@@ -212,6 +212,16 @@ export async function exportToWord(result: EvaluationResult): Promise<void> {
             new TextRun({ text: `   |   Tiềm năng giải thưởng: ${o.awardPotential}`, size: 24, color: GRAY }),
           ],
         }),
+        new Paragraph({
+          spacing: { before: 120, after: 120 },
+          border: { top: { style: BorderStyle.SINGLE, size: 1, color: "f59e0b" }, bottom: { style: BorderStyle.SINGLE, size: 1, color: "f59e0b" }, left: { style: BorderStyle.SINGLE, size: 2, color: "ea580c" }, right: { style: BorderStyle.SINGLE, size: 1, color: "f59e0b" } },
+          shading: { type: ShadingType.SOLID, color: "fff7ed" },
+          children: [
+            new TextRun({ text: "⚠ LƯU Ý QUAN TRỌNG: ", bold: true, color: "c2410c", size: 22 }),
+            new TextRun({ text: "Kết quả đánh giá này mới chỉ dựa trên nội dung bản thuyết minh/báo cáo của sản phẩm dự thi. ", bold: true, color: "9a3412", size: 22 }),
+            new TextRun({ text: "Thành viên Hội đồng cần trực tiếp trải nghiệm ứng dụng/giải pháp để kết hợp đưa ra sự đánh giá công tâm và sát thực tế hơn.", bold: true, color: "9a3412", size: 22 }),
+          ],
+        }),
         para(o.executiveSummary),
 
         divider(),

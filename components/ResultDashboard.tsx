@@ -170,6 +170,14 @@ export default function ResultDashboard({ result, onBack }: Props) {
             </div>
           </div>
         </div>
+        {/* Lưu ý quan trọng cho Hội đồng */}
+        <div className="mt-4 bg-orange-50 border-l-4 border-orange-400 rounded-r-lg p-4">
+          <p className="text-sm text-orange-800">
+            <strong>⚠ LƯU Ý QUAN TRỌNG:</strong>{" "}
+            <strong>Kết quả đánh giá này mới chỉ dựa trên nội dung bản thuyết minh/báo cáo của sản phẩm dự thi.</strong>{" "}
+            Thành viên Hội đồng cần <strong>trực tiếp trải nghiệm ứng dụng/giải pháp</strong> để kết hợp đưa ra sự đánh giá công tâm và sát thực tế hơn.
+          </p>
+        </div>
 
         {/* Charts */}
         <div className="grid md:grid-cols-2 gap-6 mt-6">
