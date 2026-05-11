@@ -7,7 +7,6 @@ export default function BrandFooter() {
         <div className="flex flex-col md:flex-row justify-between items-center gap-4 text-sm">
           <div className="text-center md:text-left">
             <p className="font-semibold text-white">{BRANDING.footerCopyright}</p>
-            <p className="text-slate-400">{BRANDING.governingBody}</p>
           </div>
           <div className="text-center md:text-right max-w-md">
             <p className="text-slate-400 text-xs">{BRANDING.footerNote}</p>

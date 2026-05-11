@@ -112,8 +112,8 @@ export default function HomePage() {
         <section className="mitc-gradient-light py-10 md:py-16">
           <div className="max-w-4xl mx-auto px-4 text-center">
             <div className="flex justify-center mb-4">
-              <div className="relative w-20 h-20">
-                <Image src={BRANDING.logoPath} alt="MITC" fill className="object-contain" />
+              <div className="relative w-40 h-40">
+                <Image src="/hero-banner.webp" alt="AI Đánh giá sản phẩm" fill className="object-contain drop-shadow-lg" priority />
               </div>
             </div>
             <h1 className="text-2xl md:text-3xl font-bold text-blue-900 mb-3">{BRANDING.heroTitle}</h1>
