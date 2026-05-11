@@ -8,7 +8,7 @@ export const BRANDING = {
   logoPath: "/logo.png",
   subtitle: "Trợ lý hỗ trợ Hội đồng đánh giá bản thuyết minh sản phẩm dự thi Hội thi Ứng dụng trí tuệ nhân tạo trong giảng dạy và quản lý",
   heroTitle: "TRỢ LÝ HỘI ĐỒNG ĐÁNH GIÁ SẢN PHẨM AI MITC",
-  heroDescription: "Công cụ AI hỗ trợ đọc bản thuyết minh đánh giá sản phẩm AI và gợi ý điểm số cho Hội đồng chấm.",
+  heroDescription: "Công cụ đọc thuyết minh đánh giá sản phẩm AI và gợi ý điểm số cho Hội đồng chấm.",
   disclaimer: "Kết quả do AI đề xuất chỉ có giá trị tham khảo. Quyết định cuối cùng thuộc Ban Giám khảo/Hội đồng đánh giá MITC.",
   footerCopyright: `© ${new Date().getFullYear()} Trường Cao đẳng Công Thương miền Trung`,
   footerNote: "Phát triển bởi TS. Nguyễn Trung Hòa - Hotline/Zalo: 0888186788",

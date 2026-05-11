@@ -9,7 +9,11 @@ export default function BrandFooter() {
             <p className="font-semibold text-white">{BRANDING.footerCopyright}</p>
           </div>
           <div className="text-center md:text-right max-w-md">
-            <p className="text-slate-400 text-xs">{BRANDING.footerNote}</p>
+            <p className="text-slate-400 text-xs">
+              <a href="https://www.facebook.com/nguyentrunghoa1979" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">
+                {BRANDING.footerNote}
+              </a>
+            </p>
           </div>
         </div>
       </div>
