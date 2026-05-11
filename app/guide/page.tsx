@@ -37,7 +37,7 @@ export default function GuidePage() {
               { step: 2, title: "Tải file hoặc dán văn bản", desc: "Upload bản thuyết minh (.docx, .pdf, .txt) hoặc dán trực tiếp nội dung. Tối đa 20MB." },
               { step: 3, title: "AI phân tích", desc: "Hệ thống tự nhận diện thông tin sản phẩm, đối chiếu 10 tiêu chí (100 điểm), gợi ý điểm số, nhận xét, câu hỏi phản biện." },
               { step: 4, title: "Xem kết quả", desc: "Dashboard hiển thị đầy đủ: metadata, tổng điểm, chi tiết tiêu chí, biểu đồ, điểm mạnh/yếu, ma trận bằng chứng, khuyến nghị." },
-              { step: 5, title: "Lưu & Xuất", desc: "Lưu vào lịch sử, tải JSON, copy Markdown. So sánh nhiều sản phẩm với nhau." },
+              { step: 5, title: "Lưu & Xuất", desc: "Lưu vào lịch sử, tải File Word, JSON, copy Markdown. So sánh nhiều sản phẩm với nhau." },
             ].map((s) => (
               <div key={s.step} className="flex gap-4 items-start">
                 <div className="w-8 h-8 rounded-full bg-blue-600 text-white flex items-center justify-center shrink-0 font-bold text-sm">{s.step}</div>

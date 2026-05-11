@@ -26,7 +26,7 @@ function subheading(text: string): Paragraph {
 function para(text: string, opts?: { bold?: boolean; italic?: boolean; color?: string; size?: number }): Paragraph {
   return new Paragraph({
     spacing: { after: 80 },
-    children: [new TextRun({ text, bold: opts?.bold, italics: opts?.italic, color: opts?.color || "333333", size: opts?.size || 22 })],
+    children: [new TextRun({ text, bold: opts?.bold, italics: opts?.italic, color: opts?.color || "333333", size: opts?.size || 26 })],
   });
 }
 
@@ -34,7 +34,7 @@ function bullet(text: string, opts?: { bold?: boolean; color?: string }): Paragr
   return new Paragraph({
     bullet: { level: 0 },
     spacing: { after: 60 },
-    children: [new TextRun({ text, bold: opts?.bold, color: opts?.color || "333333", size: 22 })],
+    children: [new TextRun({ text, bold: opts?.bold, color: opts?.color || "333333", size: 26 })],
   });
 }
 
@@ -42,8 +42,8 @@ function labelValue(label: string, value: string): Paragraph {
   return new Paragraph({
     spacing: { after: 60 },
     children: [
-      new TextRun({ text: `${label}: `, bold: true, color: GRAY, size: 22 }),
-      new TextRun({ text: value || "Không tìm thấy trong báo cáo", size: 22 }),
+      new TextRun({ text: `${label}: `, bold: true, color: GRAY, size: 26 }),
+      new TextRun({ text: value || "Không tìm thấy trong báo cáo", size: 26 }),
     ],
   });
 }
@@ -51,7 +51,7 @@ function labelValue(label: string, value: string): Paragraph {
 function cellP(text: string, opts?: { bold?: boolean; color?: string; alignment?: typeof AlignmentType.CENTER }): Paragraph {
   return new Paragraph({
     alignment: opts?.alignment,
-    children: [new TextRun({ text, bold: opts?.bold, color: opts?.color || "333333", size: 20 })],
+    children: [new TextRun({ text, bold: opts?.bold, color: opts?.color || "333333", size: 24 })],
   });
 }
 
