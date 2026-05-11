@@ -34,7 +34,7 @@ export default function GuidePage() {
           <div className="space-y-4">
             {[
               { step: 1, title: "Chọn vai trò", desc: "Chọn vai trò thành viên Hội đồng đánh giá để AI điều chỉnh góc nhìn nhận xét phù hợp." },
-              { step: 2, title: "Tải file hoặc dán văn bản", desc: "Upload bản thuyết minh (.docx, .pdf, .txt) hoặc dán trực tiếp nội dung. Tối đa 10MB." },
+              { step: 2, title: "Tải file hoặc dán văn bản", desc: "Upload bản thuyết minh (.docx, .pdf, .txt) hoặc dán trực tiếp nội dung. Tối đa 20MB." },
               { step: 3, title: "AI phân tích", desc: "Hệ thống tự nhận diện thông tin sản phẩm, đối chiếu 10 tiêu chí (100 điểm), gợi ý điểm số, nhận xét, câu hỏi phản biện." },
               { step: 4, title: "Xem kết quả", desc: "Dashboard hiển thị đầy đủ: metadata, tổng điểm, chi tiết tiêu chí, biểu đồ, điểm mạnh/yếu, ma trận bằng chứng, khuyến nghị." },
               { step: 5, title: "Lưu & Xuất", desc: "Lưu vào lịch sử, tải JSON, copy Markdown. So sánh nhiều sản phẩm với nhau." },
@@ -104,7 +104,7 @@ export default function GuidePage() {
             <li>• AI tự nhận diện thông tin — không yêu cầu nhập thủ công</li>
             <li>• Kết quả chỉ mang tính tham khảo, quyết định cuối cùng thuộc Hội đồng</li>
             <li>• Không tải lên dữ liệu mật hoặc tài liệu nội bộ chưa được phép sử dụng</li>
-            <li>• Hỗ trợ .docx, .pdf, .txt — file tối đa 10MB</li>
+            <li>• Hỗ trợ .docx, .pdf, .txt — file tối đa 20MB</li>
             <li>• Dữ liệu lịch sử lưu trên trình duyệt (localStorage), xóa khi xóa dữ liệu trình duyệt</li>
           </ul>
         </div>

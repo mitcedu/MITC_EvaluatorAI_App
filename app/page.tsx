@@ -201,7 +201,7 @@ export default function HomePage() {
                     ) : (
                       <>
                         <p className="text-slate-600 font-medium">Kéo thả file hoặc nhấp để chọn</p>
-                        <p className="text-slate-400 text-sm mt-1">Hỗ trợ: .docx, .pdf, .txt (tối đa 10MB)</p>
+                        <p className="text-slate-400 text-sm mt-1">Hỗ trợ: .docx, .pdf, .txt (tối đa 20MB)</p>
                       </>
                     )}
                     <input
